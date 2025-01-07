@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,9 +11,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LayoutGridIcon, Search, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import GlobalApi from "@/app/_utils/GlobalApi";
+import Image from "next/image";
 
 const Header = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getCategoriesList();
+  }, []);
+
+  const getCategoriesList = async () => {
+    // const GlobalApi
+    const response = await GlobalApi.getCategories();
+    const data = response?.data?.data;
+    setCategories(data);
+  };
+
   return (
     <div className="p-5 shadow-sm flex justify-between items-center">
       <div className="flex items-center gap-8">
@@ -25,10 +42,25 @@ const Header = () => {
           <DropdownMenuContent>
             <DropdownMenuLabel>Browse Category</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            {categories.map((category) => (
+              <DropdownMenuItem
+                key={category.id}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Image
+                  src={
+                    process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+                    category.icon[0].url
+                  }
+                  width={22}
+                  height={22}
+                  objectFit="cover"
+                  alt={category.name}
+                />
+                {category.icon.url}
+                {category.name}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
         <div className="hidden md:flex gap-3 items-center border rounded-full p-2">
