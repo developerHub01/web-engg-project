@@ -5,8 +5,6 @@ import Image from "next/image";
 const CategoryList = async () => {
   const categoryList = await getCategoryList();
 
-  console.log(categoryList);
-
   return (
     <div className="py-5">
       <h2 className="text-3xl text-primary font-bold pb-5">Shop By Category</h2>
