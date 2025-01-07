@@ -23,7 +23,6 @@ const Header = () => {
   }, []);
 
   const getCategoriesList = async () => {
-    // const GlobalApi
     const response = await GlobalApi.getCategories();
     const data = response?.data?.data;
     setCategories(data);
