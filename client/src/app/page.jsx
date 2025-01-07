@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
+import Sliders from "./_components/Sliders";
 
 export default function Home() {
   return (
-    <div>
-      <Button>Click me</Button>
+    <div className="p-5">
+      <Sliders />
     </div>
   );
 }
