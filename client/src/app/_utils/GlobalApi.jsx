@@ -15,9 +15,15 @@ const getPopularProductsByCategory = (categoryName) =>
     `/products?populate=*&filters[categories][name][$in]=${categoryName}`
   );
 
+const signUp = (data) => axiosClient.post("/auth/local/register", { ...data });
+
+const signIn = (data) => axiosClient.post("/auth/local", { ...data });
+
 export default {
   getCategories,
   getSliders,
   getPopularProducts,
   getPopularProductsByCategory,
+  signUp,
+  signIn,
 };

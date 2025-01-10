@@ -1,9 +1,50 @@
+"use client";
+
+import GlobalApi from "@/app/_utils/GlobalApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 const SignInPage = () => {
+  const [formData, setFormData] = useState({
+    identifier: "",
+    password: "",
+  });
+
+  const router = useRouter();
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await GlobalApi.signIn(formData);
+      const data = response.data;
+      sessionStorage.setItem("user", JSON.stringify(data.user));
+      sessionStorage.setItem("jwt", data.jwt);
+      toast("Logged in successfully");
+      return router.push("/");
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.error?.message || // API error
+        error?.message || // General error
+        "Failed to create account. Please try again.";
+
+      toast(errorMessage);
+    }
+  };
+
+  const isSubmitDisabled = !formData.password || !formData.identifier;
+
   return (
     <div className="w-full max-w-sm shadow-lg rounded-md p-5 border py-8">
       <div className="text-center pb-4">
@@ -12,10 +53,25 @@ const SignInPage = () => {
         </Link>
       </div>
       <h1 className="text-2xl text-primary pb-4 font-semibold">Login</h1>
-      <form action="" className="flex flex-col gap-5 items-baseline">
-        <Input type="email" placeholder="Email" />
-        <Input type="password" placeholder="Password" />
-        <Button>Login</Button>
+      <form
+        className="flex flex-col gap-5 items-baseline"
+        onSubmit={handleSubmit}
+      >
+        <Input
+          type="email"
+          value={formData["identifier"]}
+          name="identifier"
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        <Input
+          type="password"
+          value={formData["password"]}
+          name="password"
+          onChange={handleChange}
+          placeholder="Password"
+        />
+        <Button disabled={isSubmitDisabled}>Login</Button>
       </form>
       <div className="pt-4">
         <Link href={"/sign-up"} className="text-sm">
