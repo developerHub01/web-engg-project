@@ -1,15 +1,27 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import ProductDetails from "./ProductDetails";
 
 const PopularProductItem = ({
   name,
   description,
   mrp,
   sellingPrice,
+  itemQuantityType,
   images,
+  categories,
 }) => {
-  console.log(images[0]);
+  const category = categories[0].name;
 
   return (
     <div className="flex flex-col w-full shadow-lg rounded-md justify-center items-center gap-2 p-4 border max-w-64 mx-auto text-center">
@@ -25,7 +37,29 @@ const PopularProductItem = ({
         <p>${sellingPrice}</p>
         {mrp && <p className="line-through">${mrp}</p>}
       </div>
-      <Button variant="outline">Add To Cart</Button>
+
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">Add To Cart</Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[700px] w-[90%]">
+          <DialogHeader className="hidden">
+            <DialogTitle hidden>Edit profile</DialogTitle>
+            <DialogDescription hidden>
+              Make changes to your profile here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <ProductDetails
+            name={name}
+            description={description}
+            mrp={mrp}
+            sellingPrice={sellingPrice}
+            itemQuantityType={itemQuantityType}
+            images={images}
+            category={category}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
