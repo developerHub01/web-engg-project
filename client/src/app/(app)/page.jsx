@@ -1,6 +1,7 @@
-import CategoryList from "./_components/CategoryList";
-import PopularProducts from "./_components/PopularProducts";
-import Sliders from "./_components/Sliders";
+import CategoryList from "../_components/CategoryList";
+import PopularProducts from "../_components/PopularProducts";
+import Sliders from "../_components/Sliders";
+
 
 export default function Home() {
   return (
