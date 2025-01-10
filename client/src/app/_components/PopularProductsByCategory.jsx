@@ -2,8 +2,8 @@ import React from "react";
 import GlobalApi from "../_utils/GlobalApi";
 import PopularProductItem from "./PopularProductItem";
 
-const PopularProducts = async () => {
-  const products = await getProducts();
+const PopularProductsByCategory = async ({ categoryName }) => {
+  const products = await getProducts(categoryName);
 
   return (
     <div className="py-5">
@@ -19,9 +19,11 @@ const PopularProducts = async () => {
     </div>
   );
 };
-const getProducts = async () => {
-  const response = await GlobalApi.getPopularProducts();
+
+const getProducts = async (categoryName) => {
+  const response = await GlobalApi.getPopularProductsByCategory(categoryName);
+
   return response?.data?.data;
 };
 
-export default PopularProducts;
+export default PopularProductsByCategory;

@@ -1,5 +1,4 @@
 import CategoryList from "./_components/CategoryList";
-import Footer from "./_components/Footer";
 import PopularProducts from "./_components/PopularProducts";
 import Sliders from "./_components/Sliders";
 
@@ -9,7 +8,6 @@ export default function Home() {
       <Sliders />
       <CategoryList />
       <PopularProducts />
-      <Footer />
     </div>
   );
 }
