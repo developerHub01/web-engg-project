@@ -13,6 +13,7 @@ const SignInPage = () => {
     identifier: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -25,6 +26,7 @@ const SignInPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await GlobalApi.signIn(formData);
@@ -32,6 +34,7 @@ const SignInPage = () => {
       sessionStorage.setItem("user", JSON.stringify(data.user));
       sessionStorage.setItem("jwt", data.jwt);
       toast("Logged in successfully");
+      setIsLoading(false);
       return router.push("/");
     } catch (error) {
       const errorMessage =
@@ -39,6 +42,7 @@ const SignInPage = () => {
         error?.message || // General error
         "Failed to create account. Please try again.";
 
+      setIsLoading(false);
       toast(errorMessage);
     }
   };
@@ -71,7 +75,12 @@ const SignInPage = () => {
           onChange={handleChange}
           placeholder="Password"
         />
-        <Button disabled={isSubmitDisabled}>Login</Button>
+        <Button disabled={isSubmitDisabled || isLoading}>
+          {isLoading && (
+            <span className="size-6 rounded-full bg-transparent border-2 border-white border-x-transparent animate-spin"></span>
+          )}{" "}
+          Login
+        </Button>
       </form>
       <div className="pt-4">
         <Link href={"/sign-up"} className="text-sm">

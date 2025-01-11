@@ -14,6 +14,8 @@ const SignUpPage = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -25,20 +27,21 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await GlobalApi.signUp(formData);
       const data = response.data;
 
       toast("Account created successfully");
-
+      setIsLoading(false);
       return router.push("/sign-in");
     } catch (error) {
       const errorMessage =
         error?.response?.data?.error?.message || // API error
         error?.message || // General error
         "Failed to create account. Please try again.";
-
+      setIsLoading(false);
       toast(errorMessage);
     }
   };
@@ -79,7 +82,13 @@ const SignUpPage = () => {
           value={formData["password"]}
           placeholder="Password"
         />
-        <Button disabled={isSubmitDisabled}>Signup</Button>
+        <Button disabled={isSubmitDisabled || isLoading}>
+          {" "}
+          {isLoading && (
+            <span className="size-6 rounded-full bg-transparent border-2 border-white border-x-transparent animate-spin"></span>
+          )}{" "}
+          Signup
+        </Button>
       </form>
       <div className="pt-4">
         <Link href={"/sign-in"} className="text-sm">

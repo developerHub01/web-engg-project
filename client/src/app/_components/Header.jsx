@@ -9,23 +9,40 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutGridIcon, Search, ShoppingBag } from "lucide-react";
+import {
+  LayoutGridIcon,
+  ListOrdered,
+  LogOut,
+  Search,
+  ShoppingBag,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import GlobalApi from "@/app/_utils/GlobalApi";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [categories, setCategories] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     getCategoriesList();
+    const jwt = sessionStorage.getItem("jwt");
+    setIsLoggedIn(jwt);
   }, []);
 
   const getCategoriesList = async () => {
     const response = await GlobalApi.getCategories();
     const data = response?.data?.data;
     setCategories(data);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    router.push("/sign-in");
   };
 
   return (
@@ -75,7 +92,40 @@ const Header = () => {
         <h2 className="flex gap-2 text-lg">
           <ShoppingBag /> 0
         </h2>
-        <Button>Login</Button>
+        {isLoggedIn ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <User />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end">
+              <DropdownMenuItem asChild>
+                <button className="cursor-pointer w-full">
+                  <User />
+                  <span>Profile</span>
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <button className="cursor-pointer w-full">
+                  <ListOrdered />
+                  <span>My order</span>
+                </button>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="cursor-pointer"
+              >
+                <LogOut />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Link href={"/sign-in"}>
+            <Button>Login</Button>
+          </Link>
+        )}
       </div>
     </div>
   );
