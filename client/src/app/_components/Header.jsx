@@ -89,9 +89,11 @@ const Header = () => {
         </div>
       </div>
       <div className="flex gap-5 items-center">
-        <h2 className="flex gap-2 text-lg">
-          <ShoppingBag /> 0
-        </h2>
+        <Link href={"/cart"}>
+          <Button variant="outline" size="icon">
+            <ShoppingBag />
+          </Button>
+        </Link>
         {isLoggedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

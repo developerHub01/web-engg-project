@@ -4,8 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBasket } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
+import GlobalApi from "../_utils/GlobalApi";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 
 const ProductDetails = ({
+  id,
   name,
   description,
   itemQuantityType,
@@ -15,8 +20,46 @@ const ProductDetails = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
 
+  const router = useRouter();
+
+  const handleAddToCart = async () => {
+    const jwt = sessionStorage.getItem("jwt");
+
+    if (!jwt) return router.push("/sign-in");
+    const user = JSON.parse(sessionStorage.getItem("user"));
+
+    const allCarts = JSON.parse(localStorage.getItem("cart")) || [];
+
+    allCarts.unshift({
+      cartId: uuidv4(),
+      id,
+      name,
+      quantity,
+      price: sellingPrice,
+      image: images[0].url,
+    });
+
+    localStorage.setItem("cart", JSON.stringify(allCarts));
+
+    toast.success("Item added in cart successfully!");
+
+    // const userId = user.id;
+    // const cartData = {
+    //   data: {
+    //     quantity,
+    //     amount: Number((quantity * sellingPrice).toFixed(2)),
+    //     products: id,
+    //     users_permissions_users: userId,
+    //     userId,
+    //   },
+    // };
+    // console.log(cartData, jwt);
+
+    // await GlobalApi.addToCart(cartData, jwt);
+  };
+
   return (
-    <div className="w-full flex flex-col sm:flex-row gap-4">
+    <div className="w-full h-full flex flex-col gap-4">
       <div className="w-full h-full">
         <Image
           src={process.env.NEXT_PUBLIC_BACKEND_BASE_URL + images[0].url}
@@ -64,7 +107,8 @@ const ProductDetails = ({
             = $ {(quantity * sellingPrice).toFixed(2)}
           </span>
         </div>
-        <Button className="mt-auto">
+        <span className="h-4"></span>
+        <Button className="mt-auto" onClick={handleAddToCart}>
           <ShoppingBasket /> Add To Cart
         </Button>
       </div>

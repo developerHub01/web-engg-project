@@ -19,6 +19,16 @@ const signUp = (data) => axiosClient.post("/auth/local/register", { ...data });
 
 const signIn = (data) => axiosClient.post("/auth/local", { ...data });
 
+const addToCart = (data, jwt) => {
+  console.log(data);
+
+  axiosClient.post("/user-carts", data, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
 export default {
   getCategories,
   getSliders,
@@ -26,4 +36,5 @@ export default {
   getPopularProductsByCategory,
   signUp,
   signIn,
+  addToCart,
 };
