@@ -48,7 +48,9 @@ const Header = () => {
   return (
     <div className="p-5 shadow-sm flex justify-between items-center">
       <div className="flex items-center gap-8">
-        <Link href={"/"}>Grocery Store</Link>
+        <Link href={"/"} className="text-xl font-bold text-primary">
+          Grocery Store
+        </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="md:flex gap-2 items-center border rounded-full p-2 px-10 bg-slate-200 hidden cursor-pointer">
@@ -89,11 +91,13 @@ const Header = () => {
         </div>
       </div>
       <div className="flex gap-5 items-center">
-        <Link href={"/cart"}>
-          <Button variant="outline" size="icon">
-            <ShoppingBag />
-          </Button>
-        </Link>
+        {isLoggedIn && (
+          <Link href={"/cart"}>
+            <Button variant="outline" size="icon">
+              <ShoppingBag />
+            </Button>
+          </Link>
+        )}
         {isLoggedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

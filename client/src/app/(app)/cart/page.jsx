@@ -10,7 +10,7 @@ const CartPage = () => {
   const [cartList, setCartList] = useState([]);
 
   useEffect(() => {
-    setCartList(JSON.parse(localStorage.getItem("cart")));
+    setCartList(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
 
   const handleRemoveCartItem = (cartId) => {

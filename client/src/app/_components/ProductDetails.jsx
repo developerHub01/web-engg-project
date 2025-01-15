@@ -25,8 +25,8 @@ const ProductDetails = ({
   const handleAddToCart = async () => {
     const jwt = sessionStorage.getItem("jwt");
 
-    if (!jwt) return router.push("/sign-in");
     const user = JSON.parse(sessionStorage.getItem("user"));
+    if (!jwt || !user) return router.push("/sign-in");
 
     const allCarts = JSON.parse(localStorage.getItem("cart")) || [];
 
