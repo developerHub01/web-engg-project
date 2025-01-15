@@ -42,6 +42,7 @@ const Header = () => {
 
   const handleLogout = () => {
     sessionStorage.clear();
+    localStorage.clear()
     router.push("/sign-in");
   };
 

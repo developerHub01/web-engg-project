@@ -35,6 +35,7 @@ const SignUpPage = () => {
 
       toast("Account created successfully");
       setIsLoading(false);
+      localStorage.clear();
       return router.push("/sign-in");
     } catch (error) {
       const errorMessage =

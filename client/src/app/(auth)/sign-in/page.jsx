@@ -35,6 +35,7 @@ const SignInPage = () => {
       sessionStorage.setItem("jwt", data.jwt);
       toast("Logged in successfully");
       setIsLoading(false);
+      localStorage.clear();
       return router.push("/");
     } catch (error) {
       const errorMessage =

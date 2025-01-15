@@ -3,13 +3,17 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const CartPage = () => {
   const [cartList, setCartList] = useState([]);
 
+  const router = useRouter();
   useEffect(() => {
+    const jwt = sessionStorage.getItem("jwt");
+    if (!jwt) router.push("/");
     setCartList(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
 
@@ -124,7 +128,7 @@ const CartPage = () => {
       </div>
       {cartList.length !== 0 && (
         <div className="flex justify-center">
-          <Link href="/check-out">
+          <Link href="/checkout">
             <Button>Check out</Button>
           </Link>
         </div>
